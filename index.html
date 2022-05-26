@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">  
+    <title>Text To Speech</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
+	  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  </head>
+  <body>
+	<div id="particle"></div>
+	
+	<div id="overlay">
+		<div class="wrapper">
+      <header>Text To Mp3</header>
+      <form action="#">
+        <div class="row">
+          <label>Enter Text</label>
+          <textarea id="TextMessage" placeholder="Copy and Paste Your Content Here (Characters<5000)"></textarea>
+          <small id="the-count" class="form-text text-muted">
+            <span id="current">0</span>
+            <span id="maximum">/ 5000</span>
+            <span>| Current Limit: 6000 characters per week. </span>
+          </small>
+        </div>
+        <div class="row">
+          <label>Select Voice</label>
+          <div class="outer">
+            <select class="selector btn btn-outline-gray-310 bg-white text-black" id="Language" name="Language" onchange="Option()"><option value="en-US">English (US)</option>
+              <option value="ar-XA">Arabic</option>
+              <option value="cs-CZ">Czech (Czech Republic)</option>
+              <option value="da-DK">Danish (Denmark)</option>
+              <option value="nl-NL">Dutch (Netherlands)</option>
+              <option value="en-AU">English (Australia)</option>
+              <option value="en-IN">English (India)</option>
+              <option value="en-GB">English (UK)</option>
+              <option value="en-GB-WLS">English (Welsh)</option>
+              <option value="fil-PH">Filipino (Philippines)</option>
+              <option value="fi-FI">Finnish (Finland)</option>
+              <option value="fr-FR">French (France)</option>
+              <option value="fr-CA">French (Canada)</option>
+              <option value="de-DE">German (Germany)</option>
+              <option value="el-GR">Greek (Greece)</option>
+              <option value="hi-IN">Hindi (India)</option>
+              <option value="hu-HU">Hungarian (Hungary)</option>
+              <option value="id-ID">Indonesian (Indonesia)</option>
+              <option value="is-IS">Icelandic</option>
+              <option value="it-IT">Italian (Italy)</option>
+              <option value="ja-JP">Japanese (Japan)</option>
+              <option value="ko-KR">Korean (Korean)</option>
+              <option value="nb-NO">Norwegian (Norway)</option>
+              <option value="pl-PL">Polish (Poland)</option>
+              <option value="pt-BR">Portuguese (Brazil)</option>
+              <option value="pt-PT">Portuguese (Portugal)</option>
+              <option value="ro-RO">Romanian</option>
+              <option value="ru-RU">Russian (Russia)</option>
+              <option value="sk-SK">Slovak (Slovakia)</option>
+              <option value="es-ES">Spanish (Spain)</option>
+              <option value="es-MX">Spanish (Mexican)</option>
+              <option value="es-US">Spanish (US)</option>
+              <option value="sv-SE">Swedish (Sweden)</option>
+              <option value="tr-TR">Turkish (Turkey)</option>
+              <option value="uk-UA">Ukrainian (Ukraine)</option>
+              <option value="vi-VN">Vietnamese (Vietnam)</option>
+              <option value="cy-GB">Welsh</option>
+              </select>
+          </div>
+
+          <label>Select Voice</label>
+          <div class="outer">
+            <select class="selector btn btn-outline-gray-310 bg-white text-black" id="Voice" name="Voice" onclick="wordLimit()">
+              <option disabled selected>Choose</option>
+              <option value="en-US-Standard-B" type="0">en-US-Standard-B</option>
+              <option value="en-US-Standard-C" type="0">en-US-Standard-C</option>
+              <option value="en-US-Standard-D" type="0">en-US-Standard-D</option>
+              <option value="en-US-Standard-E" type="0">en-US-Standard-E</option>
+              <option value="en-US-Standard-E" type="0">en-US-Standard-E</option>
+              <option value="Salli_Female" id="Salli" type="1">Salli_Female</option>
+              <option value="Joanna_Male" id="Joanna" type="1">Joanna_Male</option>
+              <option value="Matthew_Male" id="Matthew" type="1">Matthew_Male</option>
+              <option value="Ivy_Female" id="Ivy" type="1">Ivy_Female</option>
+              <option value="Justin_Male" id="Justin" type="1">Justin_Male</option>
+              <option value="Kendra_Female" id="Kendra" type="1">Kendra_Female</option>
+              <option value="Kimberly_Female" id="Kimberly" type="1">Kimberly_Female</option>
+              <option value="Joey_Male" id="Joey" type="1">Joey_Male</option>
+           </select>
+          </div>
+        </div>
+        <button id="convertBtn" type="button" class="btn btn-primary" onclick="convert_to_mp3()">Convert to Mp3</button>
+          <div class="fa-3x" style="display:none;">
+            <i class="fa-solid fa-sync fa-spin"></i>
+          </div>
+        <div id="AudioPlayer"></div>
+      </form>
+    </div>
+	
+	</div>
+  <script src="script.js"></script>
+  </body>
+  <script>
+    var options = {
+    "particles": {
+        "number": {
+            "value": 99,
+            "density": {
+                "enable": true,
+                "value_area": 552.4033491425909
+            }
+        },
+        "color": {
+            "value": "#ffffff"
+        },
+        "shape": {
+            "type": "circle",
+            "stroke": {
+                "width": 4,
+                "color": "#000000"
+            },
+            "polygon": {
+                "nb_sides": 3
+            },
+            "image": {
+                "src": "img/github.svg",
+                "width": 70,
+                "height": 100
+            }
+        },
+        "opacity": {
+            "value": 1,
+            "random": true,
+            "anim": {
+                "enable": false,
+                "speed": 1,
+                "opacity_min": 0.1,
+                "sync": false
+            }
+        },
+        "size": {
+            "value": 2,
+            "random": true,
+            "anim": {
+                "enable": false,
+                "speed": 40,
+                "size_min": 0.1,
+                "sync": false
+            }
+        },
+        "line_linked": {
+            "enable": false,
+            "distance": 150,
+            "color": "#ffffff",
+            "opacity": 0.4,
+            "width": 1
+        },
+        "move": {
+            "enable": true,
+            "speed": 1.5782952832645452,
+            "direction": "none",
+            "random": true,
+            "straight": false,
+            "out_mode": "out",
+            "bounce": false,
+            "attract": {
+                "enable": false,
+                "rotateX": 600,
+                "rotateY": 1200
+            }
+        }
+    },
+    "interactivity": {
+        "detect_on": "canvas",
+        "events": {
+            "onhover": {
+                "enable": false,
+                "mode": "repulse"
+            },
+            "onclick": {
+                "enable": true,
+                "mode": "repulse"
+            },
+            "resize": true
+        },
+        "modes": {
+            "grab": {
+                "distance": 400,
+                "line_linked": {
+                    "opacity": 1
+                }
+            },
+            "bubble": {
+                "distance": 400,
+                "size": 40,
+                "duration": 2,
+                "opacity": 8,
+                "speed": 3
+            },
+            "repulse": {
+                "distance": 200,
+                "duration": 0.4
+            },
+            "push": {
+                "particles_nb": 4
+            },
+            "remove": {
+                "particles_nb": 2
+            }
+        }
+    },
+    "retina_detect": false
+};
+particlesJS("particle", options);
+  </script>
+</html>
